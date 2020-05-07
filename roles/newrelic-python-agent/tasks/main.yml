@@ -1,0 +1,13 @@
+---
+- name: Ensure Python-Pip is installed
+  apt:
+    name: python-pip
+    state: installed
+
+- name: Install NewRelic
+  pip:
+    name: newrelic
+
+# destination is a placeholder
+- name: Copy newrelic config
+  templates: src=newrelic.ini dest=/tmp/newrelic.ini

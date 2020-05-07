@@ -1,0 +1,23 @@
+---
+- name: Add the New Relic Infrastructure Agent gpg key
+  apt_key:
+    url: https://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg
+    state: present
+
+- name: Add the NewRelic PHP agent gpg key
+  apt_key:
+    url: https://download.newrelic.com/548C16BF.gpg
+    state: present
+
+# To think: should the repo info be put under specific agent? It looks like NewRelic
+# does not put all repo under the same deb repo. It's done that way to achieve modularity
+# and independent release for each agent, maybe each agent is done by different team.
+- name: Add NewRelic PHP agent repository
+  template: src=newrelic.list dest=/etc/apt/sources.list.d/newrelic.list
+
+- name: Add Newrelic Infra repository
+  template: src=newrelic-infra.list dest=/etc/apt/sources.list.d/newrelic-infra.list
+
+- name: Update APT cache
+  apt:
+    update_cache: yes

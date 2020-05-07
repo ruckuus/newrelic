@@ -1,0 +1,3 @@
+---
+- name: Notify deployment
+  command: java -jar {{ newrelic_agent_path }}/newrelic.jar deployment --appname {{ app_name }} --user {{ deployment_user }} --revision {{ lookup('env', 'REVISION') }}

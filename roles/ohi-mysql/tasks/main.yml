@@ -1,0 +1,22 @@
+---
+- name: Install MySQL On-Host Integration
+  apt:
+    name: nri-mysql
+    state: latest
+
+- name: Check if newrelic user is already created
+  command: "mysql -u {{ ohi_mysql_user }} -p{{ ohi_mysql_password }} -e 'SELECT 1'"
+  register: ohi_mysql_user_res
+  ignore_errors: true
+  changed_when: false
+
+- name: Create newrelic user on MySQL
+  command: mysql -e "CREATE USER '{{ ohi_mysql_user }}'@'localhost' IDENTIFIED BY '{{ ohi_mysql_password }}';"
+  when: ohi_mysql_user_res.rc != 0
+
+- name: Ensure newrelic user has the right privilege
+  command: mysql -e "GRANT REPLICATION CLIENT ON *.* TO '{{ ohi_mysql_user }}'@'localhost' WITH MAX_USER_CONNECTIONS 5;"
+  when: ohi_mysql_user_res.rc != 0
+
+- name: Copy MySQL OHI configuration file
+  template: src=mysql-config.yml dest=/etc/newrelic-infra/integrations.d/mysql-config.yml

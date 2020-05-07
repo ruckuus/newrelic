@@ -1,0 +1,15 @@
+---
+- name: Update APT cache and install newrelic-infra
+  apt:
+    name: newrelic-infra
+    update_cache: yes
+  notify: restart newrelic-infra
+
+- name: Create a configuration file and add your license key
+  template: src=newrelic-infra.yml dest=/etc/newrelic-infra.yml
+
+# Enable log forwarding
+- name: Enable log forwarding
+  template: src=logs.yml dest=/etc/newrelic-infra/logging.d/logs.yml
+  notify: restart newrelic-infra
+

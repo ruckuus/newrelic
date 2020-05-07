@@ -1,0 +1,19 @@
+---
+# General Ansible config
+remote_user: "{{ lookup('env', 'REMOTE_USER') }}"
+
+# NewRelic module configuration
+newrelic_license_key: "{{ lookup('env', 'NEWRELIC_LICENSE_KEY') }}"
+newrelic_install_path: /opt/
+newrelic_agent_path: /opt/newrelic
+
+# Deployment notification
+deployment_user: ansible-deploy
+
+# NewRelic Agent
+# obfuscated, raw, off
+record_sql_type: obfuscated
+
+# MySQL OHI
+ohi_mysql_user: newrelic
+ohi_mysql_password: "{{ lookup('env', 'OHI_MYSQL_PASSWORD') }}"

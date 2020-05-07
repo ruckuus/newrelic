@@ -1,0 +1,9 @@
+---
+- name: Install NewRelic PHP agent
+  apt:
+    name: newrelic-php5
+    state: present
+
+- name: Install newrelic PHP config
+  templates: src=newrelic.ini dest=/etc/newrelic.ini
+  notify: restart php-fpm
